@@ -44,7 +44,7 @@ impl FriProof {
     /// Panics if:
     /// * Number of remainder elements zero or is not a power of two.
     /// * `num_partitions` is zero or is not a power of two.
-    pub(crate) fn new<E: FieldElement>(
+    pub fn new<E: FieldElement>(
         layers: Vec<FriProofLayer>,
         remainder: Vec<E>,
         num_partitions: usize,
