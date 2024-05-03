@@ -192,7 +192,7 @@ pub trait Prover {
 
     /// Returns a new constraint evaluator which can be used to evaluate transition and boundary
     /// constraints over the extended execution trace.
-    fn new_evaluator<'a, E>(
+    async fn new_evaluator<'a, E>(
         &self,
         air: &'a Self::Air,
         aux_rand_elements: Option<ProverAuxRandElements<Self, E>>,
@@ -366,20 +366,16 @@ pub trait Prover {
         // compute random linear combinations of these evaluations using coefficients drawn from
         // the channel
         let ce_domain_size = air.ce_domain_size();
-        let composition_poly_trace =
-            info_span!("evaluate_constraints", ce_domain_size).in_scope(|| {
-                self.new_evaluator(
-                    &air,
-                    aux_rand_elements,
-                    channel.get_constraint_composition_coeffs(),
-                )
-                .evaluate(&trace_lde, &domain)
-            });
+
+        let composition_poly_trace = self
+            .new_evaluator(&air, aux_rand_elements, channel.get_constraint_composition_coeffs())
+            .await
+            .evaluate(&trace_lde, &domain);
+
         assert_eq!(composition_poly_trace.num_rows(), ce_domain_size);
 
         // 3 ----- commit to constraint evaluations -----------------------------------------------
         let (constraint_commitment, composition_poly) = {
-
             // first, build a commitment to the evaluations of the constraint composition
             // polynomial columns
             let (constraint_commitment, composition_poly) = self
