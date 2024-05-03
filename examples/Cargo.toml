@@ -34,7 +34,7 @@ structopt = { version = "0.3", default-features = false }
 tracing = { version = "0.1", default-features = false }
 tracing-forest = { version = "0.1", features = ["ansi", "smallvec"], optional = true }
 tracing-subscriber = { version = "0.3", features = ["std", "env-filter"] }
-winterfell = { version="0.8", path = "../winterfell", default-features = false }
+winterfell = { version="0.8", path = "../winterfell", default-features = false, features = ["is_sync"]}
 
 [dev-dependencies]
 criterion = "0.5"

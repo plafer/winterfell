@@ -19,6 +19,7 @@ bench = false
 concurrent = ["prover/concurrent", "std"]
 default = ["std"]
 std = ["prover/std", "verifier/std"]
+is_sync = ["prover/is_sync"]
 
 [dependencies]
 prover = { version = "0.8", path = "../prover", package = "winter-prover", default-features = false }
