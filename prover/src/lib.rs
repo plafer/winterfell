@@ -181,7 +181,7 @@ pub trait Prover {
     ///
     /// Returns a tuple containing a [TracePolyTable] with the trace polynomials for the main trace
     /// and a new [TraceLde] instance from which the LDE and trace commitments can be obtained.
-    fn new_trace_lde<E>(
+    async fn new_trace_lde<E>(
         &self,
         trace_info: &TraceInfo,
         main_trace: &ColMatrix<Self::BaseField>,
@@ -299,9 +299,10 @@ pub trait Prover {
         // commit to the main trace segment
         let (mut trace_lde, mut trace_polys) = {
             // extend the main execution trace and build a Merkle tree from the extended trace
-            let span = info_span!("commit_to_main_trace_segment").entered();
             let (trace_lde, trace_polys) =
-                self.new_trace_lde(trace.info(), trace.main_segment(), &domain);
+                self.new_trace_lde(trace.info(), trace.main_segment(), &domain).await;
+
+            let span = info_span!("commit_to_main_trace_segment").entered();
 
             // get the commitment to the main trace segment LDE
             let main_trace_root = trace_lde.get_main_trace_commitment();
