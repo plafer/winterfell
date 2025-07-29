@@ -19,6 +19,10 @@ bench = false
 name = "row_matrix"
 harness = false
 
+[[bench]]
+name = "vec_fill"
+harness = false
+
 [features]
 async = ["maybe_async/async"]
 concurrent = ["crypto/concurrent", "math/concurrent", "fri/concurrent", "utils/concurrent", "std"]
@@ -35,7 +39,7 @@ tracing = { version = "0.1", default-features = false, features = ["attributes"]
 utils = { version = "0.13", path = "../utils/core", package = "winter-utils", default-features = false }
 
 [dev-dependencies]
-criterion = "0.6"
+criterion = "0.7"
 rand-utils = { version = "0.13", path = "../utils/rand", package = "winter-rand-utils" }
 
 # Allow math in docs
